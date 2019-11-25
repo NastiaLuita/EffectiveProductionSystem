@@ -22,7 +22,6 @@ public class TemplateController {
 
         widgetRepository.deleteAll();
 
-        if(widgetRepository.count() == 0) {
             ArrayList<User> users = new ArrayList<>();
 
             for(int x = 0 ; x < 10 ; x++) {
@@ -30,7 +29,6 @@ public class TemplateController {
             }
 
             widgetRepository.save(users);
-        }
 
         model.addAttribute("users", widgetRepository.findAll());
 
