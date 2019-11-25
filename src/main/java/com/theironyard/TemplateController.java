@@ -32,7 +32,7 @@ public class TemplateController {
             widgetRepository.save(users);
         }
 
-        model.addAttribute("widgets", widgetRepository.findAll());
+        model.addAttribute("users", widgetRepository.findAll());
 
         return "home";
     }
