@@ -20,6 +20,8 @@ public class TemplateController {
     @RequestMapping(path = "/")
     public String home(Model model){
 
+        widgetRepository.deleteAll();
+
         if(widgetRepository.count() == 0) {
             ArrayList<User> users = new ArrayList<>();
 
