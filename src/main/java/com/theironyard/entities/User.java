@@ -14,7 +14,7 @@ public class User {
     String name;
 
     String login;
-    
+
     String password;
 
     public User(String name, String login, String password) {
