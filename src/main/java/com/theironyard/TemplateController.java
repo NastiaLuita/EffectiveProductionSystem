@@ -22,15 +22,15 @@ public class TemplateController {
 
         widgetRepository.deleteAll();
 
-            ArrayList<User> users = new ArrayList<>();
+            ArrayList<Widget> widgets = new ArrayList<>();
 
             for(int x = 0 ; x < 10 ; x++) {
-                users.add(new User("User " + x, "login  " + x , "Pass"));
+                widgets.add(new Widget("User " + x, "login  " + x , 111));
             }
 
-            widgetRepository.save(users);
+            widgetRepository.save(widgets);
 
-        model.addAttribute("users", widgetRepository.findAll());
+        model.addAttribute("widgets", widgetRepository.findAll());
 
         return "home";
     }

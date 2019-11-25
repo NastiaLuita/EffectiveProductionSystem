@@ -5,6 +5,6 @@ import com.theironyard.entities.Widget;
 import org.springframework.data.repository.CrudRepository;
 
 
-public interface WidgetRepository extends CrudRepository<User, Integer> {
+public interface WidgetRepository extends CrudRepository<Widget, Integer> {
 
 }
