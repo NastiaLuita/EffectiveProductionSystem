@@ -1,0 +1,24 @@
+<html>
+<head>
+    <title>TIY Java Gradle Template</title>
+</head>
+<body>
+<h1>This is the home.mustache file.</h1>
+
+<h2>Here is a list of widgets:</h2>
+
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Weight</th>
+    </tr>
+    {{#widgets}}
+        <tr>
+            <td>{{name}}</td><td>{{description}}</td><td>{{weightLbs}} lbs</td>
+        </tr>
+    {{/widgets}}
+</table>
+
+</body>
+</html>

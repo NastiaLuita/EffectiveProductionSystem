@@ -1,0 +1,6 @@
+{
+  "name": "TIY Java Spring Boot Maven Heroku Template",
+  "description": "A barebones Java app using Spring Boot with Maven, which can easily be deployed to Heroku.",
+  "image": "heroku/java",
+  "addons": [ "heroku-postgresql" ]
+}
