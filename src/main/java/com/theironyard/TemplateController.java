@@ -1,7 +1,6 @@
 package com.theironyard;
 
-import com.theironyard.entities.User;
-import com.theironyard.entities.Widget;
+import com.theironyard.entities.*;
 import com.theironyard.repositories.WidgetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,18 +16,93 @@ public class TemplateController {
     @Autowired
     WidgetRepository widgetRepository;
 
+    ArrayList<Request> requests = new ArrayList<>();
+    ArrayList<Instrument> instruments = new ArrayList<>();
+    ArrayList<User> users = new ArrayList<>();
+
+    public RequestPart nextTask(Request request){
+        RequestPart next = null;
+        for(RequestPart p: request.getParts()) {
+            if (p.getStartTime() == 0) {
+                next = p;
+                break;
+            }
+        }
+        return next;
+    }
+
+    public void processRequest(){
+        ArrayList<Integer> availability = new ArrayList<>(instruments.size());
+        for (Instrument i: instruments)
+            availability.add(i.getCount());
+
+        ArrayList<RequestPart> currentTasks = new ArrayList<>(requests.size());
+        for (Request r: requests)
+            currentTasks.add(r.getParts().get(0));
+
+        int t = 0; //time
+        while(currentTasks.size() != 0)
+        {
+            t += 1;
+            int taskToRemove = -1;
+
+            for(RequestPart p: currentTasks){
+                if (t>=p.getStartTime()+p.getTime()) { //next task if current is finished
+                    availability.set(instruments.indexOf(p.getInstrument()), availability.get(instruments.indexOf(p.getInstrument()))+1); //instrument is available
+                    RequestPart next = nextTask(requests.get(currentTasks.indexOf(p)));
+                    if (next != null) {
+                        currentTasks.set(currentTasks.indexOf(p), next); //replace task
+                        p = next;
+                    }
+                    else
+                        taskToRemove = currentTasks.indexOf(p); //mark for delete  if all tasks done
+                }
+
+                int curAvailability = availability.get(instruments.indexOf(p.getInstrument()));
+                if(curAvailability > 0){ //instrument for p is available
+                    if (p.getStartTime() == 0) { //if p has not started yet
+                        p.setStartTime(t);
+                        availability.set(instruments.indexOf(p.getInstrument()), curAvailability - 1); //instrument is  unavailable
+                    }
+                }
+            }
+            if(taskToRemove >= 0)
+                currentTasks.remove(taskToRemove); //delete
+        }
+    }
+
     @RequestMapping(path = "/")
     public String home(Model model){
 
         widgetRepository.deleteAll();
 
-            ArrayList<Widget> widgets = new ArrayList<>();
+        Instrument i1 = new Instrument("stanok1", 3);
+        instruments.add(i1);
 
-            for(int x = 0 ; x < 10 ; x++) {
-                widgets.add(new Widget("User " + x, "login  " + x , 111));
-            }
+        Instrument i2 = new Instrument("stanok2", 1);
+        instruments.add(i2);
 
-            widgetRepository.save(widgets);
+        Request r1 = new Request();
+        r1.addPart(i1, 2);
+        r1.addPart(i2, 2);
+        requests.add(r1);
+
+        Request r2 = new Request();
+        r2.addPart(i1, 3);
+        r2.addPart(i2, 1);
+        requests.add(r2);
+
+        ArrayList<Widget> widgets = new ArrayList<>();
+
+
+        for (RequestPart rp : r1.getParts()) {
+            widgets.add(new Widget(rp.getInstrument().getName(), String.valueOf(rp.getTime()), rp.getStartTime()));
+        }
+        for (RequestPart rp : r2.getParts()) {
+            widgets.add(new Widget(rp.getInstrument().getName(), String.valueOf(rp.getTime()), rp.getStartTime()));
+        }
+
+        widgetRepository.save(widgets);
 
         model.addAttribute("widgets", widgetRepository.findAll());
 
