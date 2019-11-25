@@ -10,8 +10,11 @@ public class User {
     @Id
     @GeneratedValue
     int id;
+
     String name;
+
     String login;
+    
     String password;
 
     public User(String name, String login, String password) {
