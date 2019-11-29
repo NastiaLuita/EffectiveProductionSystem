@@ -56,7 +56,7 @@ public class TemplateController {
             for(RequestPart p: currentTasks){
                 if (t>=p.getStartTime()+p.getTime()) { //next task if current is finished
                     availability.set(instruments.indexOf(p.getInstrument()), availability.get(instruments.indexOf(p.getInstrument()))+1); //instrument is available
-                    RequestPart next = nextTask(requests.get(currentTasks.indexOf(p)));
+                    RequestPart next = this.nextTask(requests.get(currentTasks.indexOf(p)));
                     if (next != null) {
                         currentTasks.set(currentTasks.indexOf(p), next); //replace task
                         p = next;
@@ -99,7 +99,7 @@ public class TemplateController {
         r2.addPart(i2, 1);
         requests.add(r2);
 
-        processRequest();
+        this.processRequest();
 
         ArrayList<Widget> widgets = new ArrayList<>();
 
