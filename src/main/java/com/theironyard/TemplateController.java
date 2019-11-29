@@ -25,7 +25,7 @@ public class TemplateController {
     @Resource
     ArrayList<User> users = new ArrayList<>();
 
-    @RequestMapping(path = "/", method = RequestMethod.GET)
+    @RequestMapping(path = "/")
     public RequestPart nextTask(Request request){
         RequestPart next = null;
         for(RequestPart p: request.getParts()) {
@@ -37,7 +37,7 @@ public class TemplateController {
         return next;
     }
 
-    @RequestMapping(path = "/", method = RequestMethod.GET)
+    @RequestMapping(path = "/")
     public void processRequest(){
         ArrayList<Integer> availability = new ArrayList<>(instruments.size());
         for (Instrument i: instruments)
