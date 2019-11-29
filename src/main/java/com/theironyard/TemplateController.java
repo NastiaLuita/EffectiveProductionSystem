@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -16,10 +18,14 @@ public class TemplateController {
     @Autowired
     WidgetRepository widgetRepository;
 
+    @Resource
     ArrayList<Request> requests = new ArrayList<>();
+    @Resource
     ArrayList<Instrument> instruments = new ArrayList<>();
+    @Resource
     ArrayList<User> users = new ArrayList<>();
 
+    @RequestMapping(path = "/", method = RequestMethod.GET)
     public RequestPart nextTask(Request request){
         RequestPart next = null;
         for(RequestPart p: request.getParts()) {
@@ -31,6 +37,7 @@ public class TemplateController {
         return next;
     }
 
+    @RequestMapping(path = "/", method = RequestMethod.GET)
     public void processRequest(){
         ArrayList<Integer> availability = new ArrayList<>(instruments.size());
         for (Instrument i: instruments)
@@ -91,6 +98,8 @@ public class TemplateController {
         r2.addPart(i1, 3);
         r2.addPart(i2, 1);
         requests.add(r2);
+
+        processRequest();
 
         ArrayList<Widget> widgets = new ArrayList<>();
 
