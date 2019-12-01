@@ -98,10 +98,10 @@ public class TemplateController {
 
         widgetRepository.deleteAll();
 
-        Instrument i1 = new Instrument("stanok1", 3);
+        Instrument i1 = new Instrument("Instrument 1", 3);
         instruments.add(i1);
 
-        Instrument i2 = new Instrument("stanok2", 1);
+        Instrument i2 = new Instrument("Instrument 2", 1);
         instruments.add(i2);
 
         Instrument i3 = new Instrument("Instrument 3", 2);
