@@ -15,17 +15,30 @@ import java.util.Random;
 @Controller
 public class TemplateController {
 
+    /*
+    Лучше сделать класс-сервис с бизнес логикой, который в свою очередь будет тянуть репозиторий
+     */
     @Autowired
     WidgetRepository widgetRepository;
 
-    @Resource
+    /*
+    Не уверен, зачем здесь это.. это же контроллер, он принимает запросы и отдает их
+    Если ты хочешь реализовать stateful, то это делается иначе
+    смотри, все контроллеры синглтоны,
+    это значит что есть только один объект этого типа инициализируемый при создании проекта
+    Представь что подключается пользователь Ваня, для него сохраняюстя инструменты
+    окей.. потом подключается Петя, а ты по прежнему хранишь инструменты Вани
+    но по идее Петя не должен знать инструменты Вани, ну.. типа это как-будто я бы мог иметь доступ к твоим перепискам
+    поэтому контроллер никогда ничего не хранит, только обрабатывает запросы
+     */
     ArrayList<Request> requests = new ArrayList<>();
-    @Resource
     ArrayList<Instrument> instruments = new ArrayList<>();
-    @Resource
-    ArrayList<User> users = new ArrayList<>();
+    //ArrayList<User> users = new ArrayList<>();
 
-    @RequestMapping(path = "/")
+    //есть гет и пост запросы, нужно их разделять
+    //не может быть несколько методов с одинаковым маппингом
+    //иначе как сервер поймет какой метод запустить?
+    @RequestMapping(path = "/nextTask")
     public RequestPart nextTask(Request request){
         RequestPart next = null;
         for(RequestPart p: request.getParts()) {
@@ -37,7 +50,9 @@ public class TemplateController {
         return next;
     }
 
-    @RequestMapping(path = "/")
+    //можно указать method = RequestMethod.POST
+    //можно просто писать не @RequestMapping, а @GetMapping и @PostMapping
+    @RequestMapping(path = "/", method = RequestMethod.POST)
     public void processRequest(){
         ArrayList<Integer> availability = new ArrayList<>(instruments.size());
         for (Instrument i: instruments)
@@ -83,10 +98,10 @@ public class TemplateController {
 
         widgetRepository.deleteAll();
 
-        Instrument i1 = new Instrument("Instrument 1", 3);
+        Instrument i1 = new Instrument("stanok1", 3);
         instruments.add(i1);
 
-        Instrument i2 = new Instrument("Instrument 2", 1);
+        Instrument i2 = new Instrument("stanok2", 1);
         instruments.add(i2);
 
         Instrument i3 = new Instrument("Instrument 3", 2);
@@ -117,13 +132,6 @@ public class TemplateController {
                 widgets.add(new Widget(""+requests.indexOf(req), rp.getInstrument().getName()+", requested time: " + rp.getTime(), rp.getStartTime()));
             }
         }
-
-//        for (RequestPart rp : r1.getParts()) {
-//            widgets.add(new Widget(rp.getInstrument().getName(), String.valueOf(rp.getTime()), rp.getStartTime()));
-//        }
-//        for (RequestPart rp : r2.getParts()) {
-//            widgets.add(new Widget(rp.getInstrument().getName(), String.valueOf(rp.getTime()), rp.getStartTime()));
-//        }
 
         widgetRepository.save(widgets);
 

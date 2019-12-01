@@ -15,13 +15,13 @@ public class Widget {
 
     String description;
 
-    double weightLbs;
+    double time;
 
     public Widget(){}
 
-    public Widget(String name, String description, double weightLbs) {
+    public Widget(String name, String description, double time) {
         this.name = name;
         this.description = description;
-        this.weightLbs = weightLbs;
+        this.time = time;
     }
 }
