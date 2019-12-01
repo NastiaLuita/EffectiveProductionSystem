@@ -4,9 +4,7 @@ import javax.persistence.*;
 
 @Entity
 public class RequestPart {
-    /*
-    Каждый Entity должен иметь поле id
-     */
+
     @Id
     @GeneratedValue
     int id;

@@ -6,9 +6,7 @@ import javax.persistence.Id;
 
 @Entity
 public class Instrument {
-    /*
-    Каждый Entity должен иметь поле id
-     */
+
     @Id
     @GeneratedValue
     int id;
