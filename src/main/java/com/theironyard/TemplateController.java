@@ -54,11 +54,11 @@ public class TemplateController {
     //можно просто писать не @RequestMapping, а @GetMapping и @PostMapping
     @RequestMapping(path = "/", method = RequestMethod.POST)
     public void processRequest(){
-        ArrayList<Integer> availability = new ArrayList<>(instruments.size());
+        ArrayList<Integer> availability = new ArrayList<Integer>(instruments.size());
         for (Instrument i: instruments)
             availability.add(i.getCount());
 
-        ArrayList<RequestPart> currentTasks = new ArrayList<>(requests.size());
+        ArrayList<RequestPart> currentTasks = new ArrayList<RequestPart>(requests.size());
         for (Request r: requests)
             currentTasks.add(r.getParts().get(0));
 
@@ -68,30 +68,40 @@ public class TemplateController {
             t += 1;
             int taskToRemove = -1;
 
-            for(RequestPart p: currentTasks){
-                if (t>=p.getStartTime()+p.getTime()) { //next task if current is finished
-                    if (p.getStartTime() != 0){
-                        availability.set(instruments.indexOf(p.getInstrument()), availability.get(instruments.indexOf(p.getInstrument()))+1); //instrument is available
-                    }
-                    RequestPart next = this.nextTask(requests.get(currentTasks.indexOf(p)));
-                    if (next != null) {
-                        currentTasks.set(currentTasks.indexOf(p), next); //replace task
-                        p = next;
-                    }
-                    else
-                        taskToRemove = currentTasks.indexOf(p); //mark for delete  if all tasks done
-                }
+            boolean change = true;
+            int count = 0;
 
-                int curAvailability = availability.get(instruments.indexOf(p.getInstrument()));
-                if(curAvailability > 0){ //instrument for p is available
-                    if (p.getStartTime() == 0) { //if p has not started yet
-                        p.setStartTime(t);
-                        availability.set(instruments.indexOf(p.getInstrument()), curAvailability - 1); //instrument is  unavailable
+            while (change && count <= currentTasks.size()) {
+                change = false;
+                count += 1;
+
+                for (RequestPart p : currentTasks) {
+                    if (t >= p.getStartTime() + p.getTime()) { //next task if current is finished
+                        change = true;
+
+                        if (p.getStartTime() != 0) {
+                            availability.set(instruments.indexOf(p.getInstrument()), availability.get(instruments.indexOf(p.getInstrument())) + 1); //instrument is available
+                        }
+
+                        RequestPart next = nextTask(requests.get(currentTasks.indexOf(p)));
+                        if (next != null) {
+                            currentTasks.set(currentTasks.indexOf(p), next); //replace task
+                            p = next;
+                        } else
+                            taskToRemove = currentTasks.indexOf(p); //mark for delete  if all tasks done
+                    }
+
+                    int curAvailability = availability.get(instruments.indexOf(p.getInstrument()));
+                    if (curAvailability > 0) { //instrument for p is available
+                        if (p.getStartTime() == 0) { //if p has not started yet
+                            p.setStartTime(t);
+                            availability.set(instruments.indexOf(p.getInstrument()), curAvailability - 1); //instrument is  unavailable
+                        }
                     }
                 }
+                if (taskToRemove >= 0 && count == 1)
+                    currentTasks.remove(taskToRemove); //delete
             }
-            if(taskToRemove >= 0)
-                currentTasks.remove(taskToRemove); //delete
         }
     }
 
