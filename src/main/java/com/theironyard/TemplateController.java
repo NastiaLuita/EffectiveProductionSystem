@@ -1,6 +1,7 @@
 package com.theironyard;
 
 import com.theironyard.entities.*;
+import com.theironyard.repositories.InstrumentRepository;
 import com.theironyard.repositories.WidgetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,8 @@ public class TemplateController {
     @Autowired
     WidgetRepository widgetRepository;
 
+    @Autowired
+    InstrumentRepository instrumentRepository;
     /*
     Не уверен, зачем здесь это.. это же контроллер, он принимает запросы и отдает их
     Если ты хочешь реализовать stateful, то это делается иначе
@@ -109,6 +112,7 @@ public class TemplateController {
     public String home(Model model){
 
         widgetRepository.deleteAll();
+        instrumentRepository.deleteAll();
 
         Instrument i1 = new Instrument("Instrument 1", 3);
         instruments.add(i1);
@@ -146,8 +150,10 @@ public class TemplateController {
         }
 
         widgetRepository.save(widgets);
+        instrumentRepository.save(instruments);
 
         model.addAttribute("widgets", widgetRepository.findAll());
+        model.addAttribute("instruments", instrumentRepository.findAll());
 
         return "home";
     }
