@@ -8,9 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.condition.RequestMethodsRequestCondition;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -26,23 +24,12 @@ public class TemplateController {
     @Autowired
     InstrumentRepository instrumentRepository;
 
-    /*
-    Не уверен, зачем здесь это.. это же контроллер, он принимает запросы и отдает их
-    Если ты хочешь реализовать stateful, то это делается иначе
-    смотри, все контроллеры синглтоны,
-    это значит что есть только один объект этого типа инициализируемый при создании проекта
-    Представь что подключается пользователь Ваня, для него сохраняюстя инструменты
-    окей.. потом подключается Петя, а ты по прежнему хранишь инструменты Вани
-    но по идее Петя не должен знать инструменты Вани, ну.. типа это как-будто я бы мог иметь доступ к твоим перепискам
-    поэтому контроллер никогда ничего не хранит, только обрабатывает запросы
-     */
     ArrayList<Request> requests = new ArrayList<>();
     ArrayList<Instrument> instruments = new ArrayList<>();
     //ArrayList<User> users = new ArrayList<>();
 
     //есть гет и пост запросы, нужно их разделять
     //не может быть несколько методов с одинаковым маппингом
-    //иначе как сервер поймет какой метод запустить?
     @RequestMapping(path = "/nextTask")
     public RequestPart nextTask(Request request){
         RequestPart next = null;
