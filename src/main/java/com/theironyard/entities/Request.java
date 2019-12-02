@@ -1,6 +1,8 @@
 package com.theironyard.entities;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.ArrayList;
 
 
@@ -11,8 +13,6 @@ public class Request {
     @GeneratedValue
     int id;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "request_part_id")
     private ArrayList<RequestPart> parts;
     //User user;
 
