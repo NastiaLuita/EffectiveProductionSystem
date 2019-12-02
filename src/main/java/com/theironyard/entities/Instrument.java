@@ -14,6 +14,8 @@ public class Instrument {
     String name;
     int count;
 
+    public Instrument() {}
+
     public Instrument(String name, int count){
         this.name = name;
         this.count = count;
