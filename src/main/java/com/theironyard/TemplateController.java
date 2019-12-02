@@ -2,12 +2,15 @@ package com.theironyard;
 
 import com.theironyard.entities.*;
 import com.theironyard.repositories.InstrumentRepository;
+import com.theironyard.repositories.RequestPartRepository;
+import com.theironyard.repositories.RequestRepository;
 import com.theironyard.repositories.WidgetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.condition.RequestMethodsRequestCondition;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -24,6 +27,13 @@ public class TemplateController {
 
     @Autowired
     InstrumentRepository instrumentRepository;
+
+    @Autowired
+    RequestRepository requestRepository;
+
+    @Autowired
+    RequestPartRepository requestPartRepository;
+
     /*
     Не уверен, зачем здесь это.. это же контроллер, он принимает запросы и отдает их
     Если ты хочешь реализовать stateful, то это делается иначе
@@ -142,18 +152,24 @@ public class TemplateController {
         this.processRequest();
 
         ArrayList<Widget> widgets = new ArrayList<>();
+        ArrayList<RequestPart> reqParts = new ArrayList<>();
 
         for (Request req : requests){
             for (RequestPart rp : req.getParts()){
                 widgets.add(new Widget(""+requests.indexOf(req), rp.getInstrument().getName()+", requested time: " + rp.getTime(), rp.getStartTime()));
+                reqParts.add(rp);
             }
         }
 
         widgetRepository.save(widgets);
         instrumentRepository.save(instruments);
+        requestRepository.save(requests);
+        requestPartRepository.save(reqParts);
 
         model.addAttribute("widgets", widgetRepository.findAll());
         model.addAttribute("instruments", instrumentRepository.findAll());
+        model.addAttribute("requests", requestRepository.findAll());
+        model.addAttribute("request_parts", requestRepository.findAll());
 
         return "home";
     }
