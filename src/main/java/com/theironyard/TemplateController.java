@@ -2,8 +2,6 @@ package com.theironyard;
 
 import com.theironyard.entities.*;
 import com.theironyard.repositories.InstrumentRepository;
-import com.theironyard.repositories.RequestPartRepository;
-import com.theironyard.repositories.RequestRepository;
 import com.theironyard.repositories.WidgetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,12 +25,6 @@ public class TemplateController {
 
     @Autowired
     InstrumentRepository instrumentRepository;
-
-    @Autowired
-    RequestRepository requestRepository;
-
-    @Autowired
-    RequestPartRepository requestPartRepository;
 
     /*
     Не уверен, зачем здесь это.. это же контроллер, он принимает запросы и отдает их
@@ -163,13 +155,9 @@ public class TemplateController {
 
         widgetRepository.save(widgets);
         instrumentRepository.save(instruments);
-        requestRepository.save(requests);
-        requestPartRepository.save(reqParts);
 
         model.addAttribute("widgets", widgetRepository.findAll());
         model.addAttribute("instruments", instrumentRepository.findAll());
-        model.addAttribute("requests", requestRepository.findAll());
-        model.addAttribute("request_parts", requestRepository.findAll());
 
         return "home";
     }
