@@ -144,10 +144,9 @@ public class TemplateController {
         //instrumentRepository.save(instruments);
 
         Initializator init = new Initializator();
-        init.initialize(model);
 
         model.addAttribute("widgets", widgetRepository.findAll());
-        //model.addAttribute("instruments", instrumentRepository.findAll());
+        model.addAttribute("instruments", init.initInstruments().findAll());
 
         return "home";
     }

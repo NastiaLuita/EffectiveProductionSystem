@@ -18,7 +18,7 @@ public class Initializator {
 
     Initializator() {}
 
-    public void initialize(Model model) {
+    public InstrumentRepository initInstruments() {
         instrumentRepository.deleteAll();
 
         Instrument i1 = new Instrument("Instrument 1", 3);
@@ -32,7 +32,8 @@ public class Initializator {
 
         instrumentRepository.save(instruments);
 
-        model.addAttribute("instruments", instrumentRepository.findAll());
+        return instrumentRepository;
+        //model.addAttribute("instruments", instrumentRepository.findAll());
     }
 
 
