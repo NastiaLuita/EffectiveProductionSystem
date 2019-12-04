@@ -141,10 +141,13 @@ public class TemplateController {
         }
 
         widgetRepository.save(widgets);
-        instrumentRepository.save(instruments);
+        //instrumentRepository.save(instruments);
+
+        Initializator init = new Initializator();
+        init.initialize(model);
 
         model.addAttribute("widgets", widgetRepository.findAll());
-        model.addAttribute("instruments", instrumentRepository.findAll());
+        //model.addAttribute("instruments", instrumentRepository.findAll());
 
         return "home";
     }
