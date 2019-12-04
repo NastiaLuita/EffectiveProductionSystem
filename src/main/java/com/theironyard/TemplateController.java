@@ -21,8 +21,8 @@ public class TemplateController {
     @Autowired
     WidgetRepository widgetRepository;
 
-    @Autowired
-    InstrumentRepository instrumentRepository;
+//    @Autowired
+//    InstrumentRepository instrumentRepository;
 
     ArrayList<Request> requests = new ArrayList<>();
     ArrayList<Instrument> instruments = new ArrayList<>();
@@ -101,7 +101,7 @@ public class TemplateController {
     public String home(Model model){
 
         widgetRepository.deleteAll();
-        instrumentRepository.deleteAll();
+        //instrumentRepository.deleteAll();
 
         Instrument i1 = new Instrument("Instrument 1", 3);
         instruments.add(i1);

@@ -33,7 +33,6 @@ public class Initializator {
         instrumentRepository.save(instruments);
 
         model.addAttribute("instruments", instrumentRepository.findAll());
-
     }
 
 
