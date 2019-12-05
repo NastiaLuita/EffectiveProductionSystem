@@ -97,7 +97,7 @@ public class TemplateController {
         }
     }
 
-    @RequestMapping(path = "/", method = RequestMethod.POST)
+    @RequestMapping(path = "/instruments")
     public void InitInstruments() {
 
         instruments.add(new Instrument("Instrument 1", 3));
@@ -113,7 +113,7 @@ public class TemplateController {
         widgetRepository.deleteAll();
         instrumentRepository.deleteAll();
 
-        InitInstruments();
+        this.InitInstruments();
 
         Request r1 = new Request();
         r1.addPart(instruments.get(0), 2);
