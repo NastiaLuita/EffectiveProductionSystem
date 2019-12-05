@@ -103,6 +103,9 @@ public class TemplateController {
         widgetRepository.deleteAll();
         //instrumentRepository.deleteAll();
 
+        Initializator init = new Initializator();
+        model.addAttribute("instruments", init.initInstruments().findAll());
+
         Instrument i1 = new Instrument("Instrument 1", 3);
         instruments.add(i1);
 
@@ -143,10 +146,7 @@ public class TemplateController {
         widgetRepository.save(widgets);
         //instrumentRepository.save(instruments);
 
-        Initializator init = new Initializator();
-
         model.addAttribute("widgets", widgetRepository.findAll());
-        model.addAttribute("instruments", init.initInstruments().findAll());
 
         return "home";
     }
