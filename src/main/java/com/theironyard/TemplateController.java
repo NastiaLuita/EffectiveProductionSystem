@@ -118,38 +118,32 @@ public class TemplateController {
 
     @RequestMapping(path = "/requests")
     public void InitRequests() {
+        ArrayList<RequestPart> rp = new ArrayList<>();
+
         requestPartRepository.deleteAll();
         requestRepository.deleteAll();
 
         Request r1 = new Request();
         r1.addPart(instruments.get(0), 2);
         r1.addPart(instruments.get(1), 2);
-
-        requestRepository.save(r1);
-        requestPartRepository.save(r1.getParts());
-
         requests.add(r1);
-
+        rp.addAll(r1.getParts());
 
         Request r2 = new Request();
         r2.addPart(instruments.get(0), 3);
         r2.addPart(instruments.get(1), 1);
-
-        requestRepository.save(r2);
-        requestPartRepository.save(r2.getParts());
-
         requests.add(r2);
-
+        rp.addAll(r2.getParts());
 
         Request r3 = new Request();
         r3.addPart(instruments.get(0), 1);
         r3.addPart(instruments.get(1), 1);
         r3.addPart(instruments.get(2), 1);
-
-        requestRepository.save(r3);
-        requestPartRepository.save(r3.getParts());
-
         requests.add(r3);
+        rp.addAll(r3.getParts());
+
+        requestRepository.save(requests);
+        requestPartRepository.save(rp);
     }
 
     @RequestMapping(path = "/")
