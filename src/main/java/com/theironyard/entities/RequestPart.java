@@ -21,15 +21,17 @@ public class RequestPart {
     @JoinColumn(name = "instrument_id")
     private Instrument instrument;
 
-    private int request_id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "request_id")
+    private Request request;
 
     private int time;
     private int startTime = 0;
 
     public RequestPart() {}
 
-    public RequestPart(int request_id, Instrument instrument, int time){
-        this.request_id = request_id;
+    public RequestPart(Request request, Instrument instrument, int time){
+        this.request = request;
         this.instrument = instrument;
         this.time = time;
     }
