@@ -24,8 +24,8 @@ public class TemplateController {
     @Autowired
     InstrumentRepository instrumentRepository;
 
-    ArrayList<Request> requests = new ArrayList<>();
-    ArrayList<Instrument> instruments = new ArrayList<>();
+    private ArrayList<Request> requests = new ArrayList<>();
+    private ArrayList<Instrument> instruments = new ArrayList<>();
     //ArrayList<User> users = new ArrayList<>();
 
     //есть гет и пост запросы, нужно их разделять
@@ -46,11 +46,11 @@ public class TemplateController {
     //можно просто писать не @RequestMapping, а @GetMapping и @PostMapping
     @RequestMapping(path = "/", method = RequestMethod.POST)
     public void processRequest(){
-        ArrayList<Integer> availability = new ArrayList<Integer>(instruments.size());
+        ArrayList<Integer> availability = new ArrayList<>(instruments.size());
         for (Instrument i: instruments)
             availability.add(i.getCount());
 
-        ArrayList<RequestPart> currentTasks = new ArrayList<RequestPart>(requests.size());
+        ArrayList<RequestPart> currentTasks = new ArrayList<>(requests.size());
         for (Request r: requests)
             currentTasks.add(r.getParts().get(0));
 
@@ -99,21 +99,17 @@ public class TemplateController {
 
     @RequestMapping(path = "/instruments")
     public void InitInstruments() {
-
-        instruments.add(new Instrument("Instrument 1", 3));
-
-        instruments.add(new Instrument("Instrument 2", 1));
-
-        instruments.add(new Instrument("Instrument 3", 2));
-    }
-
-    @RequestMapping(path = "/")
-    public String home(Model model){
-
-        widgetRepository.deleteAll();
         instrumentRepository.deleteAll();
 
-        this.InitInstruments();
+        instruments.add(new Instrument("Instrument 1", 3));
+        instruments.add(new Instrument("Instrument 2", 1));
+        instruments.add(new Instrument("Instrument 3", 2));
+
+        instrumentRepository.save(instruments);
+    }
+
+    @RequestMapping(path = "/requests")
+    public void InitRequests() {
 
         Request r1 = new Request();
         r1.addPart(instruments.get(0), 2);
@@ -130,6 +126,17 @@ public class TemplateController {
         r3.addPart(instruments.get(1), 1);
         r3.addPart(instruments.get(2), 1);
         requests.add(r3);
+    }
+
+    @RequestMapping(path = "/")
+    public String home(Model model){
+
+        widgetRepository.deleteAll();
+
+
+        this.InitInstruments();
+
+        this.InitRequests();
 
         this.processRequest();
 
@@ -144,7 +151,7 @@ public class TemplateController {
         }
 
         widgetRepository.save(widgets);
-        instrumentRepository.save(instruments);
+
 
         model.addAttribute("widgets", widgetRepository.findAll());
         model.addAttribute("instruments", instrumentRepository.findAll());
