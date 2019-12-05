@@ -23,7 +23,7 @@ public class Request {
     }
 
     public void addPart(Instrument instrument, int time){
-        parts.add(new RequestPart(this.id, instrument, time));
+        parts.add(new RequestPart(this, instrument, time));
     }
 
     public ArrayList<RequestPart> getParts(){
