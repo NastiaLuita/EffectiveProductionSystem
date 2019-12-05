@@ -2,6 +2,8 @@ package com.theironyard;
 
 import com.theironyard.entities.*;
 import com.theironyard.repositories.InstrumentRepository;
+import com.theironyard.repositories.RequestPartRepository;
+import com.theironyard.repositories.RequestRepository;
 import com.theironyard.repositories.WidgetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,12 @@ public class TemplateController {
 
     @Autowired
     InstrumentRepository instrumentRepository;
+
+    @Autowired
+    RequestRepository requestRepository;
+
+    @Autowired
+    RequestPartRepository requestPartRepository;
 
     private ArrayList<Request> requests = new ArrayList<>();
     private ArrayList<Instrument> instruments = new ArrayList<>();
@@ -110,21 +118,37 @@ public class TemplateController {
 
     @RequestMapping(path = "/requests")
     public void InitRequests() {
+        requestPartRepository.deleteAll();
+        requestRepository.deleteAll();
 
         Request r1 = new Request();
         r1.addPart(instruments.get(0), 2);
         r1.addPart(instruments.get(1), 2);
+
+        requestRepository.save(r1);
+        requestPartRepository.save(r1.getParts());
+
         requests.add(r1);
+
 
         Request r2 = new Request();
         r2.addPart(instruments.get(0), 3);
         r2.addPart(instruments.get(1), 1);
+
+        requestRepository.save(r2);
+        requestPartRepository.save(r2.getParts());
+
         requests.add(r2);
+
 
         Request r3 = new Request();
         r3.addPart(instruments.get(0), 1);
         r3.addPart(instruments.get(1), 1);
         r3.addPart(instruments.get(2), 1);
+
+        requestRepository.save(r3);
+        requestPartRepository.save(r3.getParts());
+
         requests.add(r3);
     }
 
@@ -155,6 +179,8 @@ public class TemplateController {
 
         model.addAttribute("widgets", widgetRepository.findAll());
         model.addAttribute("instruments", instrumentRepository.findAll());
+        model.addAttribute("requests", requestRepository.findAll());
+        model.addAttribute("requestParts", requestPartRepository.findAll());
 
         return "home";
     }
