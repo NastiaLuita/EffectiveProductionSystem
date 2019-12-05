@@ -21,8 +21,8 @@ public class TemplateController {
     @Autowired
     WidgetRepository widgetRepository;
 
-//    @Autowired
-//    InstrumentRepository instrumentRepository;
+    @Autowired
+    InstrumentRepository instrumentRepository;
 
     ArrayList<Request> requests = new ArrayList<>();
     ArrayList<Instrument> instruments = new ArrayList<>();
@@ -101,11 +101,7 @@ public class TemplateController {
     public String home(Model model){
 
         widgetRepository.deleteAll();
-        //instrumentRepository.deleteAll();
-
-        Initializator init = new Initializator();
-        init.initInstruments(model);
-        //model.addAttribute("instruments", .findAll());
+        instrumentRepository.deleteAll();
 
         Instrument i1 = new Instrument("Instrument 1", 3);
         instruments.add(i1);
@@ -145,9 +141,10 @@ public class TemplateController {
         }
 
         widgetRepository.save(widgets);
-        //instrumentRepository.save(instruments);
+        instrumentRepository.save(instruments);
 
         model.addAttribute("widgets", widgetRepository.findAll());
+        model.addAttribute("instruments", instrumentRepository.findAll());
 
         return "home";
     }
