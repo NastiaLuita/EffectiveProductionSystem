@@ -1,5 +1,6 @@
 package com.theironyard.entities;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,6 +14,7 @@ public class Request {
     @GeneratedValue
     int id;
 
+    @Embedded
     private ArrayList<RequestPart> parts;
     //User user;
 

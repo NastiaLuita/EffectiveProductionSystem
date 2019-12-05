@@ -142,8 +142,8 @@ public class TemplateController {
         requests.add(r3);
         rp.addAll(r3.getParts());
 
-        requestRepository.save(requests);
         requestPartRepository.save(rp);
+        requestRepository.save(requests);
     }
 
     @RequestMapping(path = "/")
