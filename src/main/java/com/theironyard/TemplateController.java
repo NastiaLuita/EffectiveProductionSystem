@@ -97,35 +97,38 @@ public class TemplateController {
         }
     }
 
+    @RequestMapping(path = "/", method = RequestMethod.POST)
+    public void InitInstruments() {
+
+        instruments.add(new Instrument("Instrument 1", 3));
+
+        instruments.add(new Instrument("Instrument 2", 1));
+
+        instruments.add(new Instrument("Instrument 3", 2));
+    }
+
     @RequestMapping(path = "/")
     public String home(Model model){
 
         widgetRepository.deleteAll();
         instrumentRepository.deleteAll();
 
-        Instrument i1 = new Instrument("Instrument 1", 3);
-        instruments.add(i1);
-
-        Instrument i2 = new Instrument("Instrument 2", 1);
-        instruments.add(i2);
-
-        Instrument i3 = new Instrument("Instrument 3", 2);
-        instruments.add(i3);
+        InitInstruments();
 
         Request r1 = new Request();
-        r1.addPart(i1, 2);
-        r1.addPart(i2, 2);
+        r1.addPart(instruments.get(0), 2);
+        r1.addPart(instruments.get(1), 2);
         requests.add(r1);
 
         Request r2 = new Request();
-        r2.addPart(i1, 3);
-        r2.addPart(i2, 1);
+        r2.addPart(instruments.get(0), 3);
+        r2.addPart(instruments.get(1), 1);
         requests.add(r2);
 
         Request r3 = new Request();
-        r3.addPart(i1, 1);
-        r3.addPart(i2, 1);
-        r3.addPart(i3, 1);
+        r3.addPart(instruments.get(0), 1);
+        r3.addPart(instruments.get(1), 1);
+        r3.addPart(instruments.get(2), 1);
         requests.add(r3);
 
         this.processRequest();
