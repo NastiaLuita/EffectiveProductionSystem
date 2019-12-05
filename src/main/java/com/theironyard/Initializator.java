@@ -4,11 +4,14 @@ import com.theironyard.entities.Instrument;
 import com.theironyard.repositories.InstrumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.ArrayList;
 
-@Component
+@Controller
 public class Initializator {
 
     @Autowired
@@ -18,7 +21,8 @@ public class Initializator {
 
     Initializator() {}
 
-    public InstrumentRepository initInstruments() {
+    @RequestMapping(path = "/", method = RequestMethod.POST)
+    public InstrumentRepository initInstruments(Model model) {
         instrumentRepository.deleteAll();
 
         Instrument i1 = new Instrument("Instrument 1", 3);
@@ -32,8 +36,8 @@ public class Initializator {
 
         instrumentRepository.save(instruments);
 
+        model.addAttribute("instruments", instrumentRepository.findAll());
         return instrumentRepository;
-        //model.addAttribute("instruments", instrumentRepository.findAll());
     }
 
 

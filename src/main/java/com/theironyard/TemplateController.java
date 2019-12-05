@@ -104,7 +104,8 @@ public class TemplateController {
         //instrumentRepository.deleteAll();
 
         Initializator init = new Initializator();
-        model.addAttribute("instruments", init.initInstruments().findAll());
+        init.initInstruments(model);
+        //model.addAttribute("instruments", .findAll());
 
         Instrument i1 = new Instrument("Instrument 1", 3);
         instruments.add(i1);
