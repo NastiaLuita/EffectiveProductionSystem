@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 @Controller
-public class TemplateController {
+public class EffectiveProductionSystem {
 
     /*
     Лучше сделать класс-сервис с бизнес логикой, который в свою очередь будет тянуть репозиторий
@@ -151,7 +151,6 @@ public class TemplateController {
 
         widgetRepository.deleteAll();
 
-
         this.InitInstruments();
 
         this.InitRequests();
@@ -169,7 +168,6 @@ public class TemplateController {
         }
 
         widgetRepository.save(widgets);
-
 
         model.addAttribute("widgets", widgetRepository.findAll());
         model.addAttribute("instruments", instrumentRepository.findAll());
